@@ -387,9 +387,9 @@ static inline uint8_t display_intrq_active(void) {
 // Minimal ctype functions
 // Prevent undefined reference to __locale_ctype_ptr
 #undef toupper
-#define toupper(x) ((x)&~0x20)
+#define toupper(x) (((x) >= 0x61 && (x) <= 0x7A) ? (x)^0x20 : (x))
 #undef tolower
-#define tolower(x) ((x)|0x20)
+#define tolower(x) (((x) >= 0x41 && (x) <= 0x5A) ? (x)&0x20 : (x))
 #undef isdigit
 #define isdigit(x) ((x)>= '0' && (x) <= '9')
 #undef isalnum

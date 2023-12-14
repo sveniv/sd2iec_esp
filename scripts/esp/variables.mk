@@ -65,6 +65,7 @@ endif
 #---------------- External Memory Options ----------------
 #BOOT=none APP=0 SPI_SPEED=40 SPI_MODE=QIO SPI_SIZE_MAP=4 
 ESPTOOLS_FLAGS = -fs 4MB
+# ESPTOOLS_FLAGS = -fs 4MB --flash_mode dio --flash_freq 40m  0x3fc000 scripts/esp/esp_init_data_default_v05.bin 
 #ESPTOOLS_FLAGS += --baud 921600 --before default_reset --after hard_reset
 
 #---------------- Architecture variables ----------------

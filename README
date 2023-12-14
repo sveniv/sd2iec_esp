@@ -982,9 +982,28 @@ ESP8266 considerations
 Install ESP8266 gcc. See https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/linux-setup.html
 Fetch ESP8266_NONOS_SDK from https://github.com/espressif/ESP8266_NONOS_SDK
 Point environment variable ESP_SDK to the SDK directory.
+Make sure to put a '/' at the end of the ESP_SDK path:
+ ESP_SDK="~/esp/ESP8266_NONOS_SDK/"
+
 Install esptool.
 
+Pyton version 2 is used by the ESP8266_NONOS_SDK build scripts. On Ubuntu-like linuxes you can do
+ sudo update-alternatives --install /usr/bin/python python /usr/bin/python2 1
+ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 2
+ sudo update-alternatives --config python
+
 Current configuration expects 32Mbit (4MB) flash memory.
+
+Set the correct SPI Flash communication mode and frequency in scripts/esp/variables.mk if you need to.
+  ESPTOOLS_FLAGS = -fs 4MB --flash_mode dio --flash_freq 40m  0x3fc000 scripts/esp/esp_init_data_default_v05.bin 
+
+You may also have to write the esp_init_data_default binary to the appropriate location according to the board flash size.
+You can find this binary in your ESP8266_NONOS_SDK/bin/ directory.
+  See: https://arduino.stackexchange.com/questions/33590/endless-loop-on-boot-after-reflashing-esp-12e-with-at-firmware
+  and: https://nodemcu.readthedocs.io/en/release/flash/#sdk-init-data
+
+Build and upload to ESP8266 with:
+  make program
 
 I used Wemos D1 mini with the following pinout
  GPIO5 = SCL - IEC CLOCK
@@ -997,7 +1016,11 @@ I used Wemos D1 mini with the following pinout
  ADC0 - (TODO Button 2 ?)
  GPIO 12(MISO),13(MOSI),14(SCLK),15(CS) SD card
  See https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
-You need a level converter as ESP8266 is a 3.3V device.
+You should use a level converter as ESP8266 is a 3.3V device, 
+but since Espressif has confirmed that the digital GPIO inputs are 5V tolerant you can get away with connecting the 
+signals directly. The C64 CIA requires a minimum of 2.4V to register a HIGH signal, so 3.3V should be compatible.
+
+The SD-card should probably be formatted as FAT-16, with a size of 2GB. You can use fdisk or similar to partition it.
 
 Some of the flash is used as a FAT image. You can create one with linux commands:
  dd if=/dev/zero bs=512 count=7112 of=eeprom.img
