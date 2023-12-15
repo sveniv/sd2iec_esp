@@ -193,9 +193,15 @@ imgtype_t check_imageext(uint8_t *name) {
   if (ustrlen(ext) != 4)
     return IMG_UNKNOWN;
 
-  f = toupper(*++ext);
-  s = toupper(*++ext);
-  t = toupper(*++ext);
+  f = (*++ext);
+  if(f >= 'a' && f <= 'z')
+    f = toupper(f);
+  s = (*++ext);
+  if(s >= 'a' && s <= 'z')
+    s = toupper(s);
+  t = (*++ext);
+  if(t >= 'a' && t <= 'z')
+    t = toupper(t);
 
 #ifdef CONFIG_M2I
   if (f == 'M' && s == '2' && t == 'I')
