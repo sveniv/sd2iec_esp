@@ -1020,8 +1020,6 @@ You should use a level converter as ESP8266 is a 3.3V device,
 but since Espressif has confirmed that the digital GPIO inputs are 5V tolerant you can get away with connecting the 
 signals directly. The C64 CIA requires a minimum of 2.4V to register a HIGH signal, so 3.3V should be compatible.
 
-The SD-card should probably be formatted as FAT-16, with a size of 2GB. You can use fdisk or similar to partition it.
-
 Some of the flash is used as a FAT image. You can create one with linux commands:
  dd if=/dev/zero bs=512 count=7112 of=eeprom.img
  mformat -i eeprom.img -v internal
